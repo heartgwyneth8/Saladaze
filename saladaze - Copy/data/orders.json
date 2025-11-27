@@ -1,0 +1,19 @@
+[
+    {
+        "id": "ORD12345",
+        "items": [
+            {
+                "name": "Mixed Greens",
+                "price": 3.00
+            },
+            {
+                "name": "Grilled Chicken",
+                "price": 5.00
+            }
+        ],
+        "total": 8.00,
+        "status": "pending",
+        "customer": "customer@example.com",
+        "timestamp": "2024-01-15T10:30:00Z"
+    }
+]

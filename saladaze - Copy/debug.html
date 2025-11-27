@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Saladaze</title>
+</head>
+<body>
+    <h1>LocalStorage Debug</h1>
+    <button onclick="checkStorage()">Check Storage</button>
+    <button onclick="clearStorage()">Clear Storage</button>
+    <button onclick="createTestAccounts()">Create Test Accounts</button>
+    
+    <div id="output" style="margin-top: 20px; white-space: pre-wrap; background: #f5f5f5; padding: 10px;"></div>
+
+    <script>
+        function checkStorage() {
+            const adminAccounts = JSON.parse(localStorage.getItem('adminAccounts')) || [];
+            const staffAccounts = JSON.parse(localStorage.getItem('staffAccounts')) || [];
+            
+            const output = document.getElementById('output');
+            output.innerHTML = `
+                Admin Accounts: ${JSON.stringify(adminAccounts, null, 2)}
+                \n\nStaff Accounts: ${JSON.stringify(staffAccounts, null, 2)}
+                \n\nCurrent Staff: ${localStorage.getItem('currentStaff')}
+            `;
+        }
+
+        function clearStorage() {
+            localStorage.removeItem('adminAccounts');
+            localStorage.removeItem('staffAccounts');
+            localStorage.removeItem('currentStaff');
+            alert('Storage cleared!');
+            checkStorage();
+        }
+
+        function createTestAccounts() {
+            const adminAccounts = [{
+                id: 'admin_001',
+                name: 'System Administrator',
+                email: 'admin@saladaze.com',
+                password: 'admin123',
+                role: 'admin',
+                createdAt: new Date().toISOString()
+            }];
+            
+            const staffAccounts = [{
+                id: 'staff_001',
+                name: 'Kitchen Staff',
+                email: 'staff@saladaze.com',
+                password: 'staff123',
+                role: 'staff',
+                createdAt: new Date().toISOString()
+            }];
+            
+            localStorage.setItem('adminAccounts', JSON.stringify(adminAccounts));
+            localStorage.setItem('staffAccounts', JSON.stringify(staffAccounts));
+            
+            alert('Test accounts created!\n\nAdmin: admin@saladaze.com / admin123\nStaff: staff@saladaze.com / staff123');
+            checkStorage();
+        }
+
+        // Check storage on page load
+        checkStorage();
+    </script>
+</body>
+</html>

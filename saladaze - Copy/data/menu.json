@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "name": "Mixed Greens",
+        "category": "bases",
+        "price": 3.00,
+        "description": "Fresh mixed lettuce greens",
+        "image": "/images/mixed-greens.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Spinach",
+        "category": "bases",
+        "price": 3.50,
+        "description": "Fresh spinach leaves",
+        "image": "/images/spinach.jpg"
+    }
+]

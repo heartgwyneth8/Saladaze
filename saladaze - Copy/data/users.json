@@ -1,0 +1,9 @@
+[
+    {
+        "id": 1,
+        "email": "admin@saladbowl.com",
+        "password": "admin123",
+        "role": "admin",
+        "name": "System Administrator"
+    }
+]

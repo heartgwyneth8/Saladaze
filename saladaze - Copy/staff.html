@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
+    <link rel="stylesheet" href="css/admin-base.css">
+    <link rel="stylesheet" href="css/staff.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentStaff = JSON.parse(localStorage.getItem('currentStaff'));
+        console.log('Staff page - Current user:', currentStaff);
+        
+        if (!currentStaff) {
+            console.log('No user logged in, redirecting to shared login');
+            window.location.href = 'shared.html'; // Changed from login.html
+            return;
+        }
+        
+        // If admin, redirect to admin dashboard
+        if (currentStaff.role === 'admin') {
+            console.log('User is admin, redirecting to admin page');
+            window.location.href = 'admin.html';
+            return;
+        }
+        
+        // If user is customer, redirect to customer page
+        if (currentStaff.role === 'customer') {
+            console.log('User is customer, redirecting to customer page');
+            window.location.href = 'customer.html';
+            return;
+        }
+        
+        console.log('User is staff, continuing to staff page');
+    });
+</script>
+</head>
+<body>
+    <button class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="images/logo-2.png" alt="Saladaze Logo">
+                    <h2>Saladaze Staff</h2>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <!-- Order Management Section -->
+                <div class="nav-section">
+                    <ul class="nav-links">
+                        <li class="nav-item">
+                            <a href="#orders" class="nav-link active" data-section="orders">
+                                <i class="fas fa-clipboard-list"></i>
+                                <span>View Orders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#update-status" class="nav-link" data-section="update-status">
+                                <i class="fas fa-sync-alt"></i>
+                                <span>Update Status</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Staff User</div>
+                        <div class="user-role">Kitchen Staff</div>
+                         <button class="btn btn-secondary" onclick="staffLogout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="goToCustomerPage()">
+                        <i class="fas fa-store"></i>
+                        Customer View
+                    </button>
+                    <button class="btn btn-primary" onclick="refreshOrders()">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh Orders
+                    </button>
+                </div>
+            </header>
+
+            <!-- Overview Stats -->
+            <div class="overview-grid" id="overviewGrid">
+                <div class="overview-card large">
+                    <h3>Today's Overview</h3>
+                    <div class="today-stats">
+                        <div class="today-stat">
+                            <span class="today-value" id="totalOrders">0</span>
+                            <span class="today-label">TOTAL ORDERS</span>
+                        </div>
+                        <div class="today-stat">
+                            <span class="today-value" id="pendingOrders">0</span>
+                            <span class="today-label">PENDING</span>
+                        </div>
+                        <div class="today-stat">
+                            <span class="today-value" id="activeOrders">0</span>
+                            <span class="today-label">ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="overview-card">
+                    <h3>Quick Stats</h3>
+                    <div class="performance-stats">
+                        <div class="performance-stat">
+                            <span class="performance-value" id="todayOrders">0</span>
+                            <span class="performance-label">TODAY</span>
+                        </div>
+                        <div class="performance-stat">
+                            <span class="performance-value" id="completedToday">0</span>
+                            <span class="performance-label">COMPLETED</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overview-card">
+                    <h3>Recent Activity</h3>
+                    <div class="recent-activity">
+                        <div class="activity-item">
+                            <div class="activity-type">New Order</div>
+                            <div class="activity-details" id="latestOrder">No recent orders</div>
+                            <div class="activity-time" id="latestOrderTime">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Orders Section -->
+            <section id="orders-section" class="content-section active">
+                <div class="section-header">
+                    <h2>All Orders</h2>
+                    <div class="section-actions">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="orderSearch" placeholder="Search orders...">
+                        </div>
+                        <div class="orders-filters">
+                            <select id="statusFilter">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="preparing">Preparing</option>
+                                <option value="ready">Ready</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="orders-container" id="ordersContainer">
+                    <!-- Orders will be loaded here -->
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>No Orders Yet</h3>
+                        <p>Orders will appear here when customers place them</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Update Status Section -->
+            <section id="update-status-section" class="content-section">
+                <div class="section-header">
+                    <h2>Update Order Status</h2>
+                    <p>Quick status updates for recent orders</p>
+                </div>
+
+                <div class="status-update-grid" id="statusUpdateGrid">
+                    <!-- Status update cards will be loaded here -->
+                    <div class="empty-state">
+                        <i class="fas fa-sync-alt"></i>
+                        <h3>No Orders to Update</h3>
+                        <p>All orders are completed or cancelled</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/staff.js"></script>
+</body>
+</html>

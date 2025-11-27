@@ -1,0 +1,71 @@
+/* Auth Styles */
+.auth-container {
+    min-height: 100vh;
+    background: var(--background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: var(--text-light);
+}
+
+.auth-form h2 {
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--text-light);
+}
+
+.auth-switch a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+/* User Profile in Header */
+.header .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: var(--card-bg);
+    border-radius: 25px;
+    border: 1px solid var(--border-color);
+}
